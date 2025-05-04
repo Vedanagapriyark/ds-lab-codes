@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node *next;
+} *head = NULL;
+
+// Function to insert at beginning
+void insertAtBeginning(int value) {
+    struct Node *newNode;
+    newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    if (head == NULL) {
+        newNode->next = NULL;
+        head = newNode;
+    } else {
+        newNode->next = head;
+        head = newNode;
+    }
+    printf("\nOne node inserted!!!\n");
+}
+
+// Function to delete at end
+void deleteAtEnd() {
+    if (head == NULL) {
+        printf("\nList is Empty!!!\n");
+    } else {
+        struct Node *temp1 = head, *temp2;
+        if (head->next == NULL) {
+            head = NULL;
+        } else {
+            while (temp1->next != NULL) {
+                temp2 = temp1;
+                temp1 = temp1->next;
+            }
+            temp2->next = NULL;
+        }
+        free(temp1);
+        printf("\nOne node deleted!!!\n\n");
+    }
+}
+
+// Function to display the list
+void display() {
+    if (head == NULL) {
+        printf("\nList is Empty\n");
+    } else {
+        struct Node *temp = head;
+        printf("\n\nList elements are - \n");
+        while (temp->next != NULL) {
+            printf("%d --->", temp->data);
+            temp = temp->next;
+        }
+        printf("%d --->NULL\n", temp->data);
+    }
+}
+
+// Main function to demonstrate the operations
+int main() {
+    int choice, value;
+
+    while (1) {
+        printf("\n\n1. Insert at Beginning");
+        printf("\n2. Delete at End");
+        printf("\n3. Display");
+        printf("\n4. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+                insertAtBeginning(value);
+                break;
+            case 2:
+                deleteAtEnd();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                exit(0);
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+
+    return 0;
+}
