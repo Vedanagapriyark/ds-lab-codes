@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node *prev, *next;
+} Node;
+
+Node *front = NULL, *rear = NULL;
+
+Node* createNode(int value) {
+    Node *newNode = malloc(sizeof(Node));
+    newNode->data = value;
+    newNode->prev = newNode->next = NULL;
+    return newNode;
+}
+
+void insertFront(int value) {
+    Node *n = createNode(value);
+    if (!front) front = rear = n;
+    else {
+        n->next = front;
+        front->prev = n;
+        front = n;
+    }
+}
+
+void insertRear(int value) {
+    Node *n = createNode(value);
+    if (!rear) front = rear = n;
+    else {
+        rear->next = n;
+        n->prev = rear;
+        rear = n;
+    }
+}
+
+void deleteFront() {
+    if (!front) return;
+    Node *temp = front;
+    front = front->next;
+    if (front) front->prev = NULL;
+    else rear = NULL;
+    free(temp);
+}
+
+void deleteRear() {
+    if (!rear) return;
+    Node *temp = rear;
+    rear = rear->prev;
+    if (rear) rear->next = NULL;
+    else front = NULL;
+    free(temp);
+}
+
+void display() {
+    Node *curr = front;
+    while (curr) {
+        printf("%d ", curr->data);
+        curr = curr->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    insertRear(10);
+    insertFront(5);
+    insertRear(15);
+    display();
+    deleteFront();
+    deleteRear();
+    display();
+    return 0;
+}
