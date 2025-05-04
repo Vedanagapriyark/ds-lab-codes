@@ -1,48 +1,60 @@
 #include <stdio.h>
-#define MAX 100
-int stack[MAX];
-int top = -1;
-// Push operation
-void push(int x) {
-    if (top == MAX - 1) {
-        printf("Stack Overflow!\n");
-        return;
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+} *top = NULL;
+
+// Function to push data onto the stack
+void push(int value) {
+    struct Node *newNode;
+    newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    if (top == NULL)
+        newNode->next = NULL;
+    else
+        newNode->next = top;
+    top = newNode;
+    printf("\nInsertion is Success!!!\n");
+}
+
+// Function to pop data from the stack
+void pop() {
+    if (top == NULL)
+        printf("\nStack is Empty!!!\n");
+    else {
+        struct Node *temp = top;
+        printf("\nDeleted element: %d", temp->data);
+        top = temp->next;
+        free(temp);
     }
-    stack[++top] = x;
-    printf("%d pushed onto stack\n", x);
 }
-// Pop operation
-int pop() {
-    if (top == -1) {
-        printf("Stack Underflow!\n");
-        return -1;
+
+// Function to display the stack elements
+void display() {
+    if (top == NULL)
+        printf("\nStack is Empty!!!\n");
+    else {
+        struct Node *temp = top;
+        while (temp->next != NULL) {
+            printf("%d--->", temp->data);
+            temp = temp->next;
+        }
+        printf("%d--->NULL", temp->data);
     }
-    return stack[top--];
 }
-// Peek operation
-int peek() {
-    if (top == -1) {
-        printf("Stack is empty\n");
-        return -1;
-    }
-    return stack[top];
-}
-// Check if stack is empty
-int isEmpty() {
-    return top == -1;
-}
-// Main function
+
 int main() {
     push(10);
     push(20);
     push(30);
-    printf("Top element: %d\n", peek());
-    printf("Popped: %d\n", pop());
-    printf("Popped: %d\n", pop());
-    if (isEmpty()) {
-        printf("Stack is empty\n");
-    } else {
-        printf("Stack is not empty\n");
-    }
+    
+    display();
+    
+    pop();
+    
+    display();
+
     return 0;
 }
